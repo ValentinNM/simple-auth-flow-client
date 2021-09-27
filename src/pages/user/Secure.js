@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useHistory } from "react-router"
 
 export default function Secure() {
-  const [users, setUsers] = useState([])
+  const [posts, setPosts] = useState([])
 
   const history = useHistory()
 
@@ -13,7 +13,7 @@ export default function Secure() {
 
     if (!user) history.push("/signin")
 
-    fetch("http://localhost:3030/users", {
+    fetch("http://localhost:3030/posts", {
       method: "GET",
       headers: {
         authorization: user.id,
@@ -21,11 +21,11 @@ export default function Secure() {
     })
       .then(res => res.json())
       .then(data => {
-        const users = data.users
+        const posts = data.posts
 
         console.log("Users GET request: ", data)
 
-        setUsers(users)
+        setPosts(posts)
       })
       .catch(error => {
         console.error("[ERROR]: ", error)
@@ -37,10 +37,13 @@ export default function Secure() {
   return (
     <main>
       <h1>Secure</h1>
-      <p>The list of users is protected by the server.</p>
+      <p>
+        The list of posts belong to the authenticated user and are protected by
+        the server.
+      </p>
       <ul>
-        {users.map((user, index) => {
-          return <li key={index}>{user.email}</li>
+        {posts.map((post, index) => {
+          return <li key={index}>{post.body}</li>
         })}
       </ul>
     </main>
