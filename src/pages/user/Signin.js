@@ -23,7 +23,13 @@ export default function Signin(props) {
     }
 
     fetch("http://localhost:3030/signin", fetchOptions)
-      .then(res => res.json())
+      .then(res => {
+        if (res.status === 401) {
+          throw Error(res.statusText)
+        }
+
+        return res.json()
+      })
       .then(data => {
         const user = data.user
 
@@ -36,6 +42,9 @@ export default function Signin(props) {
 
           history.push("/secure")
         }
+      })
+      .catch(error => {
+        console.error("[ERROR]: ", error)
       })
   }
 

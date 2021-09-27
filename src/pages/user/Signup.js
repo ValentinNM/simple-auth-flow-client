@@ -36,6 +36,9 @@ export default function Signup(props) {
           history.push("/secure")
         }
       })
+      .catch(error => {
+        console.error("[ERROR]: ", error)
+      })
   }
 
   const handleChange = event => {

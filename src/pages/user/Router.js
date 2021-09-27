@@ -13,6 +13,7 @@ export default function Router() {
   console.log("User Router: ", { authenticatedUser })
 
   useEffect(() => {
+    console.log("User Router Rendered!")
     if (authenticatedUser) return
 
     const userAsJSON = localStorage.getItem("user")

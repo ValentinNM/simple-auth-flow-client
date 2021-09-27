@@ -11,6 +11,8 @@ export default function Secure() {
 
     const user = JSON.parse(userAsJSON)
 
+    if (!user) history.push("/signin")
+
     fetch("http://localhost:3030/users", {
       method: "GET",
       headers: {
