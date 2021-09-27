@@ -7,16 +7,14 @@ export default function Secure() {
   const history = useHistory()
 
   useEffect(() => {
-    const userAsJSON = localStorage.getItem("user")
+    const token = localStorage.getItem("token")
 
-    const user = JSON.parse(userAsJSON)
-
-    if (!user) history.push("/signin")
+    if (!token) history.push("/signin")
 
     fetch("http://localhost:3030/users", {
       method: "GET",
       headers: {
-        authorization: user.id,
+        authorization: `Bearer ${token}`,
       },
     })
       .then(res => res.json())

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { Redirect, Route, Switch } from "react-router"
 
+import jwtDecode from "jwt-decode"
+
 import Header from "./components/Header"
 import Home from "./Home"
 import Secure from "./Secure"
@@ -13,20 +15,19 @@ export default function Router() {
   console.log("User Router: ", { authenticatedUser })
 
   useEffect(() => {
-    console.log("User Router Rendered!")
     if (authenticatedUser) return
 
-    const userAsJSON = localStorage.getItem("user")
+    const token = localStorage.getItem("token")
 
-    const user = JSON.parse(userAsJSON)
+    if (token) {
+      const user = jwtDecode(token)
 
-    if (user) {
       setAuthenticatedUser(user)
     }
   }, [authenticatedUser])
 
   const handleLogout = () => {
-    localStorage.removeItem("user")
+    localStorage.removeItem("token")
 
     setAuthenticatedUser(null)
   }

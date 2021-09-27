@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useHistory } from "react-router"
 
+import jwtDecode from "jwt-decode"
+
 export default function Signup(props) {
   const [user, setUser] = useState({
     email: "",
@@ -24,14 +26,18 @@ export default function Signup(props) {
     fetch("http://localhost:3030/signup", fetchOptions)
       .then(res => res.json())
       .then(data => {
-        const user = data.user
+        const token = data.token
 
-        console.log("Inside Signup Fetch: ", data)
+        console.log("Inside Signup Fetch: ", { token })
 
-        if (user) {
+        if (token) {
+          localStorage.setItem("token", token)
+
+          const user = jwtDecode(token)
+
+          console.log("Inside Signup Fetch: ", { user })
+
           setAuthenticatedUser(user)
-
-          localStorage.setItem("user", JSON.stringify(user))
 
           history.push("/secure")
         }

@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useHistory } from "react-router"
 
+import jwtDecode from "jwt-decode"
+
 export default function Signin(props) {
   const [user, setUser] = useState({
     email: "",
@@ -31,14 +33,18 @@ export default function Signin(props) {
         return res.json()
       })
       .then(data => {
-        const user = data.user
+        const token = data.token
 
-        console.log("Inside Signin Fetch: ", user)
+        console.log("Inside Signin Fetch: ", { token })
 
-        if (user) {
+        if (token) {
+          localStorage.setItem("token", token)
+
+          const user = jwtDecode(token)
+
+          console.log("Inside Signin Fetch: ", { user })
+
           setAuthenticatedUser(user)
-
-          localStorage.setItem("user", JSON.stringify(user))
 
           history.push("/secure")
         }
